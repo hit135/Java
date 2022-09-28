@@ -52,6 +52,7 @@ public class JavaStandard {
 		System.out.print(">>>> ");
 		String age = scan.nextLine();
 		System.out.println(age + "살 입니다.");
+		scan.close();
 		// scan 기능을 쓸 대는 .nextLine을 활용한다.
 		// .nextInt는 \n를 남기기 때문에
 		// 후에 .nextLine을 입력한다면 앞의 \n을 인식해서 값이 비게 된다.
