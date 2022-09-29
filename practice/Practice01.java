@@ -1,6 +1,6 @@
-package park_hyunggoo.submit01;
+package practice;
 
-public class Assignment01 {
+public class Practice01 {
 
 	public static void main(String[] args) {
 		
