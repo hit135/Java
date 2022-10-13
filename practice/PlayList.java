@@ -64,7 +64,10 @@ public class PlayList {
 
 	} // main 끝
 	
-	
+	/**
+	 * ArrayList에서 keword 검색
+	 * 가수와 제목 타입이 있음!
+	 */
 	static ArrayList<String> searchMusic(ArrayList<String> p_list, String keyword, String type) {
 		ArrayList<String> result = new ArrayList<>();
 
@@ -92,7 +95,9 @@ public class PlayList {
 	}
 	
 	
-	
+	/**
+	 * ArrayList에서 keword 검색
+	 */
 	static ArrayList<String> searchMusic(ArrayList<String> p_list, String keyword){
 		ArrayList<String> result = new ArrayList<>();
 		
@@ -107,7 +112,9 @@ public class PlayList {
 		return result;
 	}
 	
-
+	/**
+	 * 게시판 페이징 구현
+	 */
 	static void showPlayList(ArrayList<String> p_list) {
 		// 게시판 페이징 구현
 		int totalCountMusic = p_list.size(); // 총 음악 개수
