@@ -33,23 +33,23 @@ public class Menu {
 	}
 	
 	// menu를 menuList에 추가
-	public static void addMenu(String menu) {
+	public void addMenu(String menu) {
 		menuList.add(menu);
 	}
 	// menu를 menuList에서 삭제
-	public static void removeMenu(String menu) {
+	public void removeMenu(String menu) {
 		menuList.remove(menu);
 	}
 	// menuList에서 끝에서 두개를 출력
-	public static void showMenu(int i) {
+	public void showMenu(int i) {
 		System.out.println("1." + menuList.get(i - 1) + " | "  + "2. " + menuList.get(i));
 	}
 	// menulist의 size
-	public static int menuListSize() {
+	public int menuListSize() {
 		return menuList.size();
 	}
 	// menulist에서 index값에 따른 메뉴 출력
-	public static String whatMenu(int i) {
+	public String whatMenu(int i) {
 		return menuList.get(i);
 	}
 	
