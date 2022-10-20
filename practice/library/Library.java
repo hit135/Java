@@ -6,7 +6,7 @@ import ch09_class.homepage.BoardDB;
 
 public class Library {
 	
-	// 싱글턴 패턴 적용
+	// 싱글턴 패턴 적용 (중요!!)
 	private Library() {}
 	
 	// 나만 생성할 수 있다
