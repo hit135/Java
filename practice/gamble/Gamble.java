@@ -1,4 +1,4 @@
-package review.gamble;
+package park_hyunggoo.submit13;
 
 public class Gamble {
 	
@@ -14,7 +14,7 @@ public class Gamble {
 		this.name = name;
 		this.grade = grade;
 		this.type = type;
-		this.distance = "ㅁ";
+		this.distance = "--ㅁ";
 	}
 	
 	// toString
