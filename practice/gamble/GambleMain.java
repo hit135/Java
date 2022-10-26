@@ -10,29 +10,33 @@ public class GambleMain {
 		Scanner scan = new Scanner(System.in);
 		
 		GambleDB horseList = GambleDB.getInstance();
-		ArrayList<Integer> enterTeam = new ArrayList<>();
 		ArrayList<Gamble> starting = new ArrayList<>();
 		MyCareer myInfo = new MyCareer();
 		
-		Gamble testHorse = new Gamble("마치카네 후루키타루", "R", 1);
 		
 		int turn = 7;
+		int nowLv = 0;
+		
 		
 		// 랜덤 말 뽑는것 까지 구현함
 		// 팀수에 따라 말 뽑기
 		
-		System.out.println("경마 게임에 참가하신 것을 환영합니다!");
-		System.out.println("=======================================");
-		System.out.println("게임을 시작하기에 앞서서 나의 스타팅 말을 뽑겠습니다.");
-		System.out.println("스타팅 말은 총 10번을 뽑아서 한마리 말만 데리고 갈 수 있습니다!");
-		System.out.println("게임 끝날 때까지 함께하는 말이니 신중하게 골라주십시오!");
+		System.out.println();
+		System.out.println();
+		System.out.println(" 경마 게임에 참가하신 것을 환영합니다!");
+		System.out.println(" =======================================");
+		System.out.println(" 게임을 시작하기에 앞서서 나의 스타팅 말을 뽑겠습니다.");
+		System.out.println(" 스타팅 말은 총 10번을 뽑아서 한마리 말만 데리고 갈 수 있습니다!");
+		System.out.println(" 게임 끝날 때까지 함께하는 말이니 신중하게 골라주십시오!");
+		Thread.sleep(1000);
 		System.out.println("\n ======================= 스타팅 말 목록 ======================= \n");
 		for(int i = 0; i < 10; i ++) {
-			Thread.sleep(1000);
+			Thread.sleep(700);
 			Gamble start = horseList.startHorse();
 			starting.add(start);
-			System.out.println( (i+1) + "번 말 : " + start );
+			System.out.println( " " + (i+1) + "번 말 : " + start );
 		}
+		System.out.println();
 		System.out.println("게임을 함께 할 말 번호를 입력해주세요!");
 		System.out.print(">>>> ");
 		int strNum = Integer.parseInt(scan.nextLine()) -1;
@@ -67,6 +71,7 @@ public class GambleMain {
 						if (beEnforce == 1) {
 							System.out.println("강화를 진행합니다!!");
 							myInfo.fn_Enforce(myInfo);
+							Thread.sleep(1000);
 						} else if (beEnforce == 2) {
 							System.out.println("강화를 그만둡니다!\n");
 							break;
@@ -87,8 +92,10 @@ public class GambleMain {
 						int beLvUp = Integer.parseInt(scan.nextLine());
 						if (beLvUp == 1) {
 							System.out.println("레벨업을 진행합니다!!");
+							Thread.sleep(500);
 							myInfo.fn_lvUp(myInfo);
-
+							nowLv = myInfo.getLv();
+							Thread.sleep(1000);
 						} else if (beLvUp == 2) {
 							System.out.println("레벨업을 그만둡니다!\n");
 							break;
@@ -133,10 +140,8 @@ public class GambleMain {
 					ArrayList<Gamble> beginer = new ArrayList<>();
 					// 말 추가
 					beginer = myInfo.beginerHos(myInfo);
-					// 말 달리기
-					horseList.runTeam(beginer);
-					// 내 말의 등수 구하기
-					int myRank = horseList.myRank(beginer);
+					// 말 달리기와 내말의 등수
+					int myRank = horseList.runTeam(beginer, nowLv);
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("         내 말의 등수는 " + myRank + "등입니다!");
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -150,9 +155,7 @@ public class GambleMain {
 				}else if(grang == 2) {
 					ArrayList<Gamble> expert = new ArrayList<>();
 					expert = myInfo.exHos(myInfo);
-					horseList.runTeam(expert);
-					// 내 말의 등수 구하기
-					int myRank = horseList.myRank(expert);
+					int myRank = horseList.runTeam(expert, nowLv);
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("         내 말의 등수는 " + myRank + "등입니다!");
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -167,9 +170,7 @@ public class GambleMain {
 				}else if(grang == 3) {
 					ArrayList<Gamble> finalG = new ArrayList<>();
 					finalG = myInfo.finalHos(myInfo);
-					horseList.runTeam(finalG);
-					// 내 말의 등수 구하기
-					int myRank = horseList.myRank(finalG);
+					int myRank = horseList.runTeam(finalG, nowLv);
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("         내 말의 등수는 " + myRank + "등입니다!");
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

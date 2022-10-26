@@ -181,15 +181,46 @@ public class GambleDB {
 	String end_Blk = "";
 	String end_Line = "|";
 	int blank = 0;
+	// 말들의 도착 시간을 담은 배열
+	ArrayList<Double> horsesTime = new ArrayList<>();
 	// 등급에 따라 경주마 달리는 로직
 	// 말을 받으면 그 등급을 뽑아내서 달리자
 	// 한번만 달리는 로직
-	public void runHorse(Gamble horse){
+	public void runHorse(Gamble horse, double startTime){
 		// 각 말의 거리
 		String horseDis = horse.getDistance();
 		front_Blk = "";
 		end_Blk = "";
 		blank = 0;
+		// 골인했을때, 골인을 하지 않았으면,,
+		
+		if(horse.getTime() != 0) {
+			System.out.print(horseDis);
+			// 등수와 시간 출력
+			for(int k = 0; k < horsesTime.size(); k++) {
+				if(horse.getTime() == horsesTime.get(k)) {
+					System.out.println(" >>> " + (k+1) + "등 : " + (Math.round((horse.getTime() - startTime) * 100)) / 100.0  + "초" );
+				}
+			}
+			return;
+		}else {
+			// 골인하면
+			if(horseDis.indexOf("ㅁ") - 1 >= 100) {
+				// 도착 시간이 담김
+				double nowTimeMill = System.currentTimeMillis() / 1000.0;
+				horse.setTime(nowTimeMill);
+				horsesTime.add(horse.getTime());
+				
+				System.out.print(horseDis);
+				
+				for(int k = 0; k < horsesTime.size(); k++) {
+					if(horse.getTime() == horsesTime.get(k)) {
+						System.out.println(" >>> " + (k+1) + "등 : " + (Math.round((horse.getTime() - startTime) * 100)) / 100.0 + "초" );
+					}
+				}
+				return;
+			}
+		}
 		
 		if(horse.getGrade() == "SSR") {
 			if(randInt < 75) {
@@ -256,8 +287,12 @@ public class GambleDB {
 	
 	// 입력받은 말 리스트들 순서대로 달리기
 	// 그리고 내 말의 등수 구하기
-	public void runTeam(ArrayList<Gamble> p_list) throws InterruptedException {
+	public int runTeam(ArrayList<Gamble> p_list, int nowLv) throws InterruptedException {
 		goal = 0;
+		int myLank = 0;
+		// 시작 시간
+		double startTime = 0;
+		
  		outer:while(true) {
  			Thread.sleep(100);
  			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -266,27 +301,93 @@ public class GambleDB {
 				System.out.println( (i+1) + "번팀 : " +p_list.get(i));
 			}
  			System.out.println("\n===================================== 경마장 ===================================== \n");
+ 			
+ 			// 시작 시간에 값이 없으면
+ 			if(startTime == 0) {
+ 				startTime = System.currentTimeMillis() / 1000.0;
+ 			}
+ 			
+ 			// 말들 달리기!
 			for(int i = 0; i < p_list.size(); i++) {
-				randInt = (int) Math.ceil( Math.random() * 100 );
+				randInt = (int) Math.ceil( Math.random() * 100 ) + nowLv;
 				randInt = runType(p_list.get(i), randInt);
 				System.out.print( (i+1) + "번마 | " );
-				runHorse(p_list.get(i));
+				runHorse(p_list.get(i), startTime);
+			}
 				
-				if(blank >= 100) {
-					if(p_list.get(i).getDistance().indexOf("ㅁ") - 1 >= 100) {
-						System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-						System.out.println(
-								"===================================== 팀 정보 ===================================== \n");
-						for (int k = 0; k < p_list.size(); k++) {
-							System.out.println((k + 1) + "번팀 : " + p_list.get(k));
-						}
-	 			System.out.println("\n===================================== 경마장 ===================================== \n");
-						System.out.println( (i+1) + "번마 " + p_list.get(i) + "(이)가 우승했습니다!!!"  );
-						break outer;
-					}
+			// 모든 말들이 들어갔는가?
+			boolean allGoal = false;
+			for (int k = 0; k < p_list.size(); k++) {
+				int whereHos = p_list.get(k).getDistance().indexOf("ㅁ") - 1;
+				if (whereHos < 100) {
+					allGoal = false;
+					break;
+				} else {
+					allGoal = true;
+
 				}
 			}
+			
+			if(allGoal == true) {
+	 			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	 			System.out.println("===================================== 팀 정보 ===================================== \n");
+				for(int i = 0; i < p_list.size(); i++) {
+					System.out.println( (i+1) + "번팀 : " +p_list.get(i));
+				}
+	 			System.out.println("\n===================================== 경마장 ===================================== \n");
+	 			for(int i = 0; i < p_list.size(); i++) {
+					randInt = (int) Math.ceil( Math.random() * 100 );
+					randInt = runType(p_list.get(i), randInt);
+					System.out.print( (i+1) + "번마 | " );
+					runHorse(p_list.get(i), startTime);
+				}
+				Thread.sleep(800);
+			}
+			
+			// 모든 말들이 들어가면 멈춤
+			if (allGoal == true) {
+				System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+				System.out
+						.println("===================================== 팀 정보 ===================================== \n");
+				for (int k = 0; k < p_list.size(); k++) {
+					System.out.println((k + 1) + "번팀 : " + p_list.get(k));
+				}
+				System.out.println(
+						"\n===================================== 경마장 ===================================== \n");
+				// 내 말의 등수 리턴과 모든 말들의 결과값 출력
+				for (int k = 0; k < horsesTime.size(); k++) {
+					for (int j = 0; j < p_list.size(); j++) {
+						Gamble nowH = p_list.get(j);
+						if (horsesTime.get(k) == nowH.getTime()) {
+							System.out.println(k + 1 + "등 : " + (Math.round((nowH.getTime() - startTime) * 100)) / 100.0
+									+ "초 | " + nowH);
+						}
+
+						// 내말의 등수 리턴
+						if (horsesTime.get(k) == p_list.get(0).getTime()) {
+							myLank = (k + 1);
+						}
+					}
+				}
+				break outer;
+			}
+
+//				if(blank >= 100) {
+//					if(p_list.get(i).getDistance().indexOf("ㅁ") - 1 >= 100) {
+//						System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+//						System.out.println(
+//								"===================================== 팀 정보 ===================================== \n");
+//						for (int k = 0; k < p_list.size(); k++) {
+//							System.out.println((k + 1) + "번팀 : " + p_list.get(k));
+//						}
+//	 			System.out.println("\n===================================== 경마장 ===================================== \n");
+//						System.out.println( (i+1) + "번마 " + p_list.get(i) + "(이)가 우승했습니다!!!"  );
+//						break outer;
+//					}
+//				}
 		}
+		startTime = 0;
+		return myLank;
 	}
 	
 	// 움직인 거리 구하기
@@ -295,11 +396,15 @@ public class GambleDB {
 	}
 	
 	// 말이 들어간 시간 구하기
-	public int goalTime(Gamble p_horse) {
-		int goalT = 0;
-		while(true) {
-			if(p_horse.getDistance().indexOf("ㅁ") - 1 >= 100) {
-				goalT = nowTime();
+	// 도착하지 않으면 0담김
+	public int goalTime(Gamble p_horse, int nowGoal) {
+		int goalT = nowGoal;
+		if(goalT == 0) {
+			while(true) {
+				if(p_horse.getDistance().indexOf("ㅁ") - 1 >= 100) {
+					goalT = nowTime();
+					break;
+				}
 				break;
 			}
 		}
@@ -340,6 +445,8 @@ public class GambleDB {
 	public void resetDis(ArrayList<Gamble> p_list) {
 		for(int i = 0; i < p_list.size(); i++) {
 			p_list.get(i).setDistance("--ㅁ");
+			p_list.get(i).setTime(0);
+			horsesTime = new ArrayList<>();
 		}
 	}
 	
@@ -464,4 +571,8 @@ public class GambleDB {
 		return nowTime;
 	}
 
+	// 시간에 따라 도착하는것 출력함
+	// 이제 모든 말들 레이스에 끝에 도달하면 시간을 얻고 싶다
+	// Gamble클래스에 시간 항목을 추가하면 가능 할 듯 하다..
+	
 }

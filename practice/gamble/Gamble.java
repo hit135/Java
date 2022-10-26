@@ -6,6 +6,7 @@ public class Gamble {
 	private String grade;
 	private int type;
 	private String distance;
+	private double time;
 	
 	// 생성자
 	public Gamble() {}
@@ -15,6 +16,7 @@ public class Gamble {
 		this.grade = grade;
 		this.type = type;
 		this.distance = "--ㅁ";
+		this.time = 0.0;
 	}
 	
 	// toString
@@ -64,6 +66,13 @@ public class Gamble {
 		this.distance = distance;
 	}
 	
+	public double getTime() {
+		return time;
+	}
+	
+	public void setTime(double time) {
+		this.time = time;
+	}
 	
 	
 	
