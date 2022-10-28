@@ -1,4 +1,4 @@
-package park_hyunggoo.submit13;
+package review.gamble;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -63,6 +63,9 @@ public class GambleDB {
 	public static GambleDB getInstance() {
 		return instance;
 	}
+	
+	// 콜백 함수
+	public Callback lvRun;
 	
 	// 배열 생성
 	ArrayList<Gamble> horseList = new ArrayList<>();
@@ -287,7 +290,7 @@ public class GambleDB {
 	
 	// 입력받은 말 리스트들 순서대로 달리기
 	// 그리고 내 말의 등수 구하기
-	public int runTeam(ArrayList<Gamble> p_list, int nowLv) throws InterruptedException {
+	public int runTeam(ArrayList<Gamble> p_list) throws InterruptedException {
 		goal = 0;
 		int myLank = 0;
 		// 시작 시간
@@ -309,7 +312,8 @@ public class GambleDB {
  			
  			// 말들 달리기!
 			for(int i = 0; i < p_list.size(); i++) {
-				randInt = (int) Math.ceil( Math.random() * 100 ) + nowLv;
+				randInt = (int) Math.ceil( Math.random() * 100 ) + lvRun.lvRunNum();
+				
 				randInt = runType(p_list.get(i), randInt);
 				System.out.print( (i+1) + "번마 | " );
 				runHorse(p_list.get(i), startTime);

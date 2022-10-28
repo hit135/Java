@@ -1,4 +1,4 @@
-package park_hyunggoo.submit13;
+package review.gamble;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -110,6 +110,15 @@ public class GambleMain {
 				}
 				
 			}else if(beNum == 4) {
+				
+				// GambleDB에 콜백함수 재정의
+				horseList.lvRun = new Callback() {
+					@Override
+					public int lvRunNum() {
+						return myInfo.getLv();
+					}
+				};
+				
 				System.out.println(
 						"   _.-=-._.-=-._.-=-._.-=-._.-=-._.-=-._.-=-._.-=-._.-=-._.-=-._.-=-._.-=-._\n" + 
 						".-'---      - ---     --     ---   -----   - --       ----  ----   -     ---`-.\n" + 
@@ -141,7 +150,7 @@ public class GambleMain {
 					// 말 추가
 					beginer = myInfo.beginerHos(myInfo);
 					// 말 달리기와 내말의 등수
-					int myRank = horseList.runTeam(beginer, nowLv);
+					int myRank = horseList.runTeam(beginer);
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("         내 말의 등수는 " + myRank + "등입니다!");
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -155,7 +164,7 @@ public class GambleMain {
 				}else if(grang == 2) {
 					ArrayList<Gamble> expert = new ArrayList<>();
 					expert = myInfo.exHos(myInfo);
-					int myRank = horseList.runTeam(expert, nowLv);
+					int myRank = horseList.runTeam(expert);
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("         내 말의 등수는 " + myRank + "등입니다!");
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -170,7 +179,7 @@ public class GambleMain {
 				}else if(grang == 3) {
 					ArrayList<Gamble> finalG = new ArrayList<>();
 					finalG = myInfo.finalHos(myInfo);
-					int myRank = horseList.runTeam(finalG, nowLv);
+					int myRank = horseList.runTeam(finalG);
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("         내 말의 등수는 " + myRank + "등입니다!");
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

@@ -1,4 +1,4 @@
-package park_hyunggoo.submit13;
+package review.gamble;
 
 public class Gamble {
 	
